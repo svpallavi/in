@@ -1,0 +1,4 @@
+CREATE TABLE TemperatureData (
+    Timestamp TIMESTAMP,
+    Temperature NUMBER
+);
