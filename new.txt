@@ -1,8 +1,8 @@
-using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Data;
 using System.Globalization;
 using System.IO;
+using System.Data.OracleClient; // Use System.Data.OracleClient namespace
 
 namespace TemperatureDataToDatabase
 {
@@ -10,8 +10,7 @@ namespace TemperatureDataToDatabase
     {
         static void Main(string[] args)
         {
-            string connectionString = "Data Source=//localhost:1521/orcl;User Id=sys;Password=Harahari@2002;DBA Privilege = SYSDBA;";
-            string csvFilePath = "C:\\Users\\91998\\Desktop\\data1.csv";
+            string connectionString = "User Id=myusername;Password=mypassword;Data Source=mydb;";
 
             using (OracleConnection connection = new OracleConnection(connectionString))
             {
@@ -23,6 +22,7 @@ namespace TemperatureDataToDatabase
                     cmd.Transaction = transaction;
                     cmd.CommandType = CommandType.Text;
 
+                    string csvFilePath = "C:\\Users\\nehar\\OneDrive\\Documents\\temp.csv";
                     string[] lines = File.ReadAllLines(csvFilePath);
 
                     foreach (string line in lines)
@@ -67,9 +67,9 @@ namespace TemperatureDataToDatabase
                 cmd.CommandType = CommandType.Text;
 
                 // Assuming table columns are named Timestamp and Temperature
-                cmd.CommandText = "INSERT INTO Temperaturedata1 (Timestamp, Temperature) VALUES (:timestamp, :temperature)";
-                cmd.Parameters.Add(":timestamp", OracleDbType.Date).Value = timestamp;
-                cmd.Parameters.Add(":temperature", OracleDbType.Double).Value = temperature;
+                cmd.CommandText = "INSERT INTO TEMP (Timestamp, Temperature) VALUES (:timestamp, :temperature)";
+                cmd.Parameters.Add(":timestamp", OracleType.DateTime).Value = timestamp;
+                cmd.Parameters.Add(":temperature", OracleType.Double).Value = temperature;
 
                 cmd.ExecuteNonQuery();
             }
